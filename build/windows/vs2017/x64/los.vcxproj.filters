@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="内部文件">
+      <UniqueIdentifier>{09c237b7-51fe-4c47-a444-1233082084c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\file">
+      <UniqueIdentifier>{cbf48729-5d71-4e5a-8dff-f454ff0466df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="内部文件\file">
+      <UniqueIdentifier>{5af57ff2-9a18-4099-8e34-20a437f2ef6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\los">
+      <UniqueIdentifier>{c214e2e0-ac2d-47ae-81c1-9107b2664937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="内部文件\log">
+      <UniqueIdentifier>{9159b8f6-bda7-4a28-ac7a-d88b9e786052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\log">
+      <UniqueIdentifier>{9e9ef190-b1ce-4262-b57b-983733a1d017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\sock">
+      <UniqueIdentifier>{ca780d12-7e2f-4f2f-8a0c-325f748f12fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="内部文件\sock">
+      <UniqueIdentifier>{30c6e334-7ad5-4ffe-ae7f-9728a4abd4a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\include\los.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\file\file_info.h">
+      <Filter>内部文件\file</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\cores.h">
+      <Filter>内部文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\los\files.h">
+      <Filter>头文件\los</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\los\logs.h">
+      <Filter>头文件\los</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\log\logger.h">
+      <Filter>内部文件\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\log\log_thread.h">
+      <Filter>内部文件\log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\los\sockaddrs.h">
+      <Filter>头文件\los</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\los\socks.h">
+      <Filter>头文件\los</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\sock\sockaddr4.h">
+      <Filter>内部文件\sock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\sock\sockaddr6.h">
+      <Filter>内部文件\sock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\log\circular_q.h">
+      <Filter>内部文件\log</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\file\files.cpp">
+      <Filter>源文件\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\file\file_info.cpp">
+      <Filter>源文件\file</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\log\log_thread.cpp">
+      <Filter>源文件\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\log\logger.cpp">
+      <Filter>源文件\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\log\logs.cpp">
+      <Filter>源文件\log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\cores.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sock\sockaddr4.cpp">
+      <Filter>源文件\sock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sock\sockaddr6.cpp">
+      <Filter>源文件\sock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sock\sockaddrs.cpp">
+      <Filter>源文件\sock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\sock\sockets.cpp">
+      <Filter>源文件\sock</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
