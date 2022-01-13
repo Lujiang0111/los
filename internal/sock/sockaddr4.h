@@ -21,25 +21,29 @@ public:
     Sockaddr4(sockaddr_in *p_addr, bool is_local);
     virtual ~Sockaddr4();
 
-    virtual bool JoinMulticastGroup(int fd, SockaddrInterface * group_addr);
+    virtual bool JoinMulticastGroup(int fd, SockaddrInterface *group_addr);
 
-    virtual bool DropMulticastGroup(int fd, SockaddrInterface * group_addr);
+    virtual bool DropMulticastGroup(int fd, SockaddrInterface *group_addr);
 
-    virtual bool AddMulticastSource(int fd, SockaddrInterface * group_addr, SockaddrInterface * source_addr);
+    virtual bool AddMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
 
-    virtual bool DropMulticastSource(int fd, SockaddrInterface * group_addr, SockaddrInterface * source_addr);
+    virtual bool DropMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
 
-    virtual bool BlockMulticastSource(int fd, SockaddrInterface * group_addr, SockaddrInterface * source_addr);
+    virtual bool BlockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
 
-    virtual bool UnblockMulticastSource(int fd, SockaddrInterface * group_addr, SockaddrInterface * source_addr);
+    virtual bool UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
 
-    virtual bool Bind(int fd, SockaddrInterface *local_addr);
+    virtual bool UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv);
+
+    virtual bool Bind(int fd);
 
     virtual bool Connect(int fd);
 
     virtual int Sendto(int fd, const void *buf, int len);
 
     virtual void *GetNative();
+
+    virtual bool isMulticast() const;
 
     virtual const char *GetIp() const;
 

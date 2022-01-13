@@ -194,48 +194,88 @@ bool Sockaddr4::UnblockMulticastSource(int fd, SockaddrInterface *group_addr, So
     return true;
 }
 
-bool Sockaddr4::Bind(int fd, SockaddrInterface *local_addr)
+bool Sockaddr4::UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv)
 {
-    Sockaddr4 *local_addr4 = dynamic_cast<Sockaddr4 *>(local_addr);
+	Sockaddr4 *local_addr4 = dynamic_cast<Sockaddr4 *>(local_addr);
 
-#if defined (WIN32) || defined (_WINDLL)
-    if (local_addr4)
-    {
-        if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr4->addr_), sizeof(local_addr4->addr_)) < 0)
-        {
-            los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", local_addr4->ip_.c_str(), local_addr4->port_, los::socks::GetLastErrorCode());
-            return false;
-        }
-    }
-    else
-    {
-        if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
-        {
-            los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
-            return false;
-        }
-    }
+	int on = 1;
+	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char *>(&on), sizeof(on));
 
-    return true;
-#else
-    if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
-    {
-        los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
-        return false;
-    }
-
-    if ((local_addr4) && (local_addr4->if_name_.length() > 0))
-    {
-        if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, local_addr4->if_name_.c_str(), local_addr4->if_name_.size()) < 0)
-        {
-            los::logs::Printfln("SO_BINDTODEVICE fail! local ip=%s, interface=%s, error=%d",
-                local_addr4->ip_.c_str(), local_addr4->if_name_.c_str(), los::socks::GetLastErrorCode());
-            return false;
-        }
-    }
-
-    return true;
+#ifdef SO_REUSEPORT
+	setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char *>(&on), sizeof(on));
 #endif
+
+	if (is_recv)
+	{
+#if defined (WIN32) || defined (_WINDLL)
+		if ((isMulticast()) && (local_addr4))
+		{
+			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr4->addr_), sizeof(local_addr4->addr_)) < 0)
+			{
+				los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr4->ip_.c_str(), local_addr4->port_, los::socks::GetLastErrorCode());
+				return false;
+			}
+		}
+		else
+		{
+			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+			{
+				los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+				return false;
+			}
+		}
+#else
+		if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+		{
+			los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+			return false;
+		}
+
+		if ((local_addr4) && (local_addr4->if_name_.length() > 0))
+		{
+			if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, local_addr4->if_name_.c_str(), local_addr4->if_name_.size()) < 0)
+			{
+				los::logs::Printfln("SO_BINDTODEVICE fail! local ip=%s, interface=%s, error=%d",
+					local_addr4->ip_.c_str(), local_addr4->if_name_.c_str(), los::socks::GetLastErrorCode());
+				return false;
+			}
+		}
+#endif
+	}
+	else
+	{
+		if (local_addr4)
+		{
+			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr4->addr_), sizeof(local_addr4->addr_)) < 0)
+			{
+				los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr4->ip_.c_str(), local_addr4->port_, los::socks::GetLastErrorCode());
+				return false;
+			}
+
+			if (isMulticast())
+			{
+				if (setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, reinterpret_cast<const char *>(&local_addr4->addr_.sin_addr), sizeof(local_addr4->addr_.sin_addr)) < 0)
+				{
+					los::logs::Printfln("IP_MULTICAST_IF fail! local ip=%s, interface=%s, error=%d",
+						local_addr4->ip_.c_str(), local_addr4->if_name_.c_str(), los::socks::GetLastErrorCode());
+					return false;
+				}
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Sockaddr4::Bind(int fd)
+{
+	if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+	{
+		los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+		return false;
+	}
+
+	return true;
 }
 
 bool Sockaddr4::Connect(int fd)
@@ -262,6 +302,11 @@ int Sockaddr4::Sendto(int fd, const void *buf, int len)
 void *Sockaddr4::GetNative()
 {
     return &addr_;
+}
+
+bool Sockaddr4::isMulticast() const
+{
+    return IN_MULTICAST(ntohl(addr_.sin_addr.s_addr));
 }
 
 const char *Sockaddr4::GetIp() const

@@ -73,13 +73,22 @@ public:
     virtual bool UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr) = 0;
 
     /***************************************************************************//**
-    * socket bind封装
+    * Udp发送/接收前设置，执行必须的bind函数
     * fd            [in]    套接字
     * local_addr    [in]    本机网卡地址，若为空则不绑定网卡
-    * @note         this指针指向的是需要bind的地址
+    * is_recv       [in]    是否用作接收，true为接收，false为发送
+    * @note         this指针指向的是目的地址
     * @return       true/false  成功/失败
      ******************************************************************************/
-    virtual bool Bind(int fd, SockaddrInterface *local_addr) = 0;
+    virtual bool UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv) = 0;
+
+    /***************************************************************************//**
+    * socket bind封装
+    * fd        [in]    套接字
+    * @return   true/false  成功/失败
+    * @note     存粹的bind封装，一般用Udp/TCPSetup即可
+     ******************************************************************************/
+    virtual bool Bind(int fd) = 0;
 
     /***************************************************************************//**
     * socket connect封装
@@ -103,6 +112,11 @@ public:
     * @return   sockaddr *句柄
      ******************************************************************************/
     virtual void *GetNative() = 0;
+
+    /***************************************************************************//**
+    * 判断地址是否为组播地址
+     ******************************************************************************/
+    virtual bool isMulticast() const = 0;
 
     /***************************************************************************//**
     * 获取Ip地址
