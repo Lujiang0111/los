@@ -50,6 +50,8 @@ LOS_API void Printf(const char *format, ...);
  ******************************************************************************/
 LOS_API void Printfln(const char *format, ...);
 
+#define LOS_DEF_LOG(level, fmt, ...) los::logs::DefaultLogger()->Log(level, true, __FILE__, __LINE__, fmt, ##__VA_ARGS__);
+
 }   // namespace logs
 }   // namespace los
 
