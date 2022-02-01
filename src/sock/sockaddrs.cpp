@@ -56,11 +56,11 @@ std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint16_t por
     return std::move(h);
 }
 
-std::shared_ptr<SockaddrInterface> Accept(int fd)
+std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd)
 {
     sockaddr_storage remote_addr = { 0 };
     socklen_t remote_addr_len = sizeof(sockaddr_storage);
-    int remote_fd = static_cast<int>(accept(fd, reinterpret_cast<sockaddr *>(&remote_addr), &remote_addr_len));
+    remote_fd = static_cast<int>(accept(fd, reinterpret_cast<sockaddr *>(&remote_addr), &remote_addr_len));
     if (remote_fd < 0)
     {
         return nullptr;

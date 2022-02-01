@@ -157,9 +157,10 @@ LOS_API std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint
 /***************************************************************************//**
 * accept()封装
 * fd        [in]    套接字
-* @return   accept()返回的对端地址句柄
+* remote_fd [out]   accept()返回的对端fd
+* @return   对端地址句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<SockaddrInterface> Accept(int fd);
+LOS_API std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd);
 
 /***************************************************************************//**
 * recvfrom()封装
