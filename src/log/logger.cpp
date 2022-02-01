@@ -185,7 +185,7 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
                 time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
                 time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
                 kLogLevelMaps[msg.level].level_msg, msg.thread_id, msg.content);
-        int ret = fwrite(content.c_str(), 1, content.length(), file_);
+        fwrite(content.c_str(), 1, content.length(), file_);
         fflush(file_);
     }
 }
