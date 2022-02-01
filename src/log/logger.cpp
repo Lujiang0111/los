@@ -73,6 +73,15 @@ Logger::Logger(const char *path, size_t max_size)
     file_ = nullptr;
 }
 
+Logger::~Logger()
+{
+    if (file_)
+    {
+        fclose(file_);
+        file_ = nullptr;
+    }
+}
+
 void Logger::Log(Levels level, bool print_screen, const char *name, int line, const char *format, ...)
 {
     std::vector<char> content_buf(256);
@@ -120,7 +129,8 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
         // close exist file
         if (file_)
         {
-            file_->close();
+            fclose(file_);
+            file_ = nullptr;
         }
 
         // do cleaning
@@ -140,7 +150,7 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
             time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday, kDirSep,
             time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday, time_tm.tm_hour);
         files::CreateDir(name.c_str(), true);
-        file_ = std::make_shared<fmt::ostream>(fmt::output_file(name, fmt::file::WRONLY | fmt::file::CREATE | fmt::file::APPEND));
+        file_ = fopen(name.c_str(), "a");
         
         hour_count_ = hour_count;
     }
@@ -162,24 +172,22 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
     }
 
     int msec = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(msg.time.time_since_epoch()).count() % 1000);
-    
-    if (msg.name.length() > 0)
+    if (file_)
     {
-        file_->print("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {} {}:{}, T:{}, {}\n",
-            id,
-            time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
-            time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
-            kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content);
+        std::string content = (msg.name.length() > 0)
+            ? fmt::format("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {} {}:{}, T:{}, {}\n",
+                id,
+                time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
+                time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
+                kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content)
+            : fmt::format("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {}, T:{}, {}\n",
+                id,
+                time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
+                time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
+                kLogLevelMaps[msg.level].level_msg, msg.thread_id, msg.content);
+        int ret = fwrite(content.c_str(), 1, content.length(), file_);
+        fflush(file_);
     }
-    else
-    {
-        file_->print("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {}, T:{}, {}\n",
-            id,
-            time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
-            time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
-            kLogLevelMaps[msg.level].level_msg, msg.thread_id, msg.content);
-    }
-    file_->flush();
 }
 
 void Logger::DeleteLog(const files::FileInfoInterface *file_info, size_t &del_size)

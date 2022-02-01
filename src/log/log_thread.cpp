@@ -1,5 +1,7 @@
 ﻿#include "log/log_thread.h"
 
+#include "fmt/format.h"
+
 constexpr size_t kMaxItems = 1000;
 
 namespace los {
@@ -14,6 +16,19 @@ LogThread &LogThread::GetInstance()
 LogThread::LogThread() : msgs_(kMaxItems)
 {
     thread_ = std::thread(&LogThread::WorkerLoop, this);
+}
+
+LogThread::~LogThread()
+{
+    // post a kTerminate msg
+    LogMsg msg;
+    msg.type = kTerminate;
+    Enqueue(std::move(msg));
+
+    if (thread_.joinable())
+    {
+        thread_.join();
+    }
 }
 
 void LogThread::Enqueue(LogMsg &&msg)
@@ -67,19 +82,6 @@ void LogThread::WorkerLoop()
         default:
             break;
         }
-    }
-}
-
-LogThread::~LogThread()
-{
-    // post a kTerminate msg
-    LogMsg msg;
-    msg.type = kTerminate;
-    Enqueue(std::move(msg));
-
-    if (thread_.joinable())
-    {
-        thread_.join();
     }
 }
 
