@@ -20,7 +20,7 @@ enum MsgTypes
 
 struct LogMsg
 {
-    Logger *logger;
+    std::shared_ptr<Logger> logger;
     MsgTypes type{ MsgTypes::kLog };
     std::chrono::system_clock::time_point time;
     size_t thread_id{ 0 };

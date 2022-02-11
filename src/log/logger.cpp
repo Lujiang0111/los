@@ -96,7 +96,7 @@ void Logger::Log(Levels level, bool print_screen, const char *name, int line, co
 void Logger::LogContent(Levels level, bool print_screen, const char *name, int line, const char *content, size_t content_length)
 {
     LogMsg msg;
-    msg.logger = this;
+    msg.logger = shared_from_this();
     msg.type = kLog;
     msg.time = std::chrono::system_clock::now();
     msg.thread_id = GetThreadId();
