@@ -122,80 +122,80 @@ bool Sockaddr6::UnblockMulticastSource(int fd, SockaddrInterface *group_addr, So
 
 bool Sockaddr6::UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv)
 {
-	Sockaddr6 *local_addr6 = dynamic_cast<Sockaddr6 *>(local_addr);
+    Sockaddr6 *local_addr6 = dynamic_cast<Sockaddr6 *>(local_addr);
 
-	int on = 1;
-	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char *>(&on), sizeof(on));
+    int on = 1;
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char *>(&on), sizeof(on));
 
 #ifdef SO_REUSEPORT
-	setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char *>(&on), sizeof(on));
+    setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, reinterpret_cast<const char *>(&on), sizeof(on));
 #endif
 
-	if (is_recv)
-	{
+    if (is_recv)
+    {
 #if defined (WIN32) || defined (_WINDLL)
-		if ((isMulticast()) && (local_addr6))
-		{
-			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr6->addr_), sizeof(local_addr6->addr_) < 0))
-			{
-				los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr6->ip_.c_str(), local_addr6->port_, los::socks::GetLastErrorCode());
-				return false;
-			}
-		}
-		else
-		{
-			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
-			{
-				los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
-				return false;
-			}
-		}
+        if ((IsMulticast()) && (local_addr6))
+        {
+            if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr6->addr_), sizeof(local_addr6->addr_) < 0))
+            {
+                los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr6->ip_.c_str(), local_addr6->port_, los::socks::GetLastErrorCode());
+                return false;
+            }
+        }
+        else
+        {
+            if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+            {
+                los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+                return false;
+            }
+        }
 #else
-		if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
-		{
-			los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
-			return false;
-		}
+        if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+        {
+            los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+            return false;
+        }
 #endif
-	}
-	else
-	{
-		if (local_addr6)
-		{
-			if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr6->addr_), sizeof(local_addr6->addr_) < 0))
-			{
-				los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr6->ip_.c_str(), local_addr6->port_, los::socks::GetLastErrorCode());
-				return false;
-			}
+    }
+    else
+    {
+        if (local_addr6)
+        {
+            if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr6->addr_), sizeof(local_addr6->addr_) < 0))
+            {
+                los::logs::Printfln("bind fail! local ip=%s, local port=%hu, error=%d", local_addr6->ip_.c_str(), local_addr6->port_, los::socks::GetLastErrorCode());
+                return false;
+            }
 
-			if (isMulticast())
-			{
-				if (setsockopt(fd, IPPROTO_IP, IPV6_MULTICAST_IF, reinterpret_cast<const char *>(&local_addr6->if_num_), sizeof(local_addr6->if_num_)) < 0)
-				{
-					los::logs::Printfln("IPV6_MULTICAST_IF fail! local ip=%s, if num=%d, error=%d", local_addr6->ip_.c_str(), local_addr6->if_num_, los::socks::GetLastErrorCode());
-					return false;
-				}
-			}
-		}
-	}
+            if (IsMulticast())
+            {
+                if (setsockopt(fd, IPPROTO_IP, IPV6_MULTICAST_IF, reinterpret_cast<const char *>(&local_addr6->if_num_), sizeof(local_addr6->if_num_)) < 0)
+                {
+                    los::logs::Printfln("IPV6_MULTICAST_IF fail! local ip=%s, if num=%d, error=%d", local_addr6->ip_.c_str(), local_addr6->if_num_, los::socks::GetLastErrorCode());
+                    return false;
+                }
+            }
+        }
+    }
 
-	if (local_addr6)
-	{
-		scope_id_ = local_addr6->scope_id_;
-	}
+    if (local_addr6)
+    {
+        scope_id_ = local_addr6->scope_id_;
+    }
 
-	return true;
+    return true;
 }
 
 bool Sockaddr6::Bind(int fd)
 {
-	if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
-	{
-		los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
-		return false;
-	}
+    if (bind(fd, reinterpret_cast<const struct sockaddr *>(&addr_), sizeof(addr_)) < 0)
+    {
+        los::logs::Printfln("bind fail! ip=%s, port=%hu, error=%d", ip_.c_str(), port_, los::socks::GetLastErrorCode());
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 bool Sockaddr6::Connect(int fd)
@@ -224,7 +224,7 @@ void *Sockaddr6::GetNative()
     return &addr_;
 }
 
-bool Sockaddr6::isMulticast() const
+bool Sockaddr6::IsMulticast() const
 {
     return IN6_IS_ADDR_MULTICAST(&(addr_.sin6_addr));
 }

@@ -44,7 +44,7 @@ public:
 
     virtual void *GetNative();
 
-    virtual bool isMulticast() const;
+    virtual bool IsMulticast() const;
 
     virtual const char *GetIp() const;
 
