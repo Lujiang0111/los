@@ -10,8 +10,8 @@ std::shared_ptr<LoggerInterface> CreateLogger(const char *path, size_t max_size)
 
 LoggerInterface *DefaultLogger()
 {
-    static Logger default_logger = Logger("Log");
-    return &default_logger;
+    static auto default_logger = CreateLogger("Log", 0);
+    return default_logger.get();
 }
 
 void Printf(const char *format, ...)
