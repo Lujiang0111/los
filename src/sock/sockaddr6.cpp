@@ -20,13 +20,15 @@ namespace sockaddrs {
 Sockaddr6::Sockaddr6(const char *ip, uint16_t port, bool is_local) : if_num_(0), scope_id_(0)
 {
     assert(ip);
-    ip_ = ip;
-    port_ = port;
-
     memset(&addr_, 0, sizeof(addr_));
     addr_.sin6_family = AF_INET6;
     inet_pton(AF_INET6, ip, addr_.sin6_addr.s6_addr);
     addr_.sin6_port = htons(port);
+
+    char ip_buf[INET6_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET6, &addr_.sin6_addr, ip_buf, INET6_ADDRSTRLEN);
+    ip_ = ip_buf;
+    port_ = ntohs(addr_.sin6_port);
 
     if (is_local)
     {
@@ -37,9 +39,9 @@ Sockaddr6::Sockaddr6(const char *ip, uint16_t port, bool is_local) : if_num_(0),
 Sockaddr6::Sockaddr6(sockaddr_in6 *p_addr, bool is_local) : if_num_(0), scope_id_(0)
 {
     memcpy(&addr_, p_addr, sizeof(addr_));
-    char ip[INET6_ADDRSTRLEN] = { 0 };
-    inet_ntop(AF_INET6, &addr_.sin6_addr, ip, INET6_ADDRSTRLEN);
-    ip_ = ip;
+    char ip_buf[INET6_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET6, &addr_.sin6_addr, ip_buf, INET6_ADDRSTRLEN);
+    ip_ = ip_buf;
     port_ = ntohs(addr_.sin6_port);
 
     if (is_local)

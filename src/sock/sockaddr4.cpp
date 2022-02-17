@@ -21,13 +21,15 @@ namespace sockaddrs {
 Sockaddr4::Sockaddr4(const char *ip, uint16_t port, bool is_local) : if_num_(0)
 {
     assert(ip);
-    ip_ = ip;
-    port_ = port;
-
     memset(&addr_, 0, sizeof(addr_));
     addr_.sin_family = AF_INET;
     addr_.sin_addr.s_addr = inet_addr(ip);
     addr_.sin_port = htons(port);
+
+    char ip_buf[INET_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET, &addr_.sin_addr, ip_buf, INET_ADDRSTRLEN);
+    ip_ = ip_buf;
+    port_ = ntohs(addr_.sin_port);
 
     if (is_local)
     {
@@ -38,9 +40,9 @@ Sockaddr4::Sockaddr4(const char *ip, uint16_t port, bool is_local) : if_num_(0)
 Sockaddr4::Sockaddr4(sockaddr_in *p_addr, bool is_local) : if_num_(0)
 {
     memcpy(&addr_, p_addr, sizeof(addr_));
-    char ip[INET_ADDRSTRLEN] = { 0 };
-    inet_ntop(AF_INET, &addr_.sin_addr, ip, INET_ADDRSTRLEN);
-    ip_ = ip;
+    char ip_buf[INET_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET, &addr_.sin_addr, ip_buf, INET_ADDRSTRLEN);
+    ip_ = ip_buf;
     port_ = ntohs(addr_.sin_port);
 
     if (is_local)
