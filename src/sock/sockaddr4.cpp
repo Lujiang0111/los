@@ -56,6 +56,51 @@ Sockaddr4::~Sockaddr4()
 
 }
 
+static int Ipv4Cmp(struct sockaddr_in *lhs, struct sockaddr_in *rhs)
+{
+    for (int index = 0; index < 4; index++)
+    {
+        if ((reinterpret_cast<uint8_t *>(&(lhs->sin_addr.s_addr)))[index] > (reinterpret_cast<uint8_t *>(&(rhs->sin_addr.s_addr)))[index])
+        {
+            return 1;
+        }
+        else if ((reinterpret_cast<uint8_t *>(&(lhs->sin_addr.s_addr)))[index] < (reinterpret_cast<uint8_t *>(&(rhs->sin_addr.s_addr)))[index])
+        {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+int Sockaddr4::Compare(SockaddrInterface *rhs)
+{
+    Sockaddr4 *rhs4 = dynamic_cast<Sockaddr4 *>(rhs);
+    if (!rhs4)
+    {
+        los::logs::Printfln("Wrong type between group addr and local addr");
+        return INT_MAX;
+    }
+
+    return Ipv4Cmp(&addr_, &rhs4->addr_);
+}
+
+void Sockaddr4::IpIncrease()
+{
+    for (int idx = 3; (idx >= 0) && (0 == ++reinterpret_cast<uint8_t *>(&addr_.sin_addr.s_addr)[idx]); --idx);
+    char ip_buf[INET_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET, &addr_.sin_addr, ip_buf, INET_ADDRSTRLEN);
+    ip_ = ip_buf;
+}
+
+void Sockaddr4::IpDecrease()
+{
+    for (int idx = 3; (idx >= 0) && (0xff == --reinterpret_cast<uint8_t *>(&addr_.sin_addr.s_addr)[idx]); --idx);
+    char ip_buf[INET_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET, &addr_.sin_addr, ip_buf, INET_ADDRSTRLEN);
+    ip_ = ip_buf;
+}
+
 bool Sockaddr4::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
@@ -329,23 +374,6 @@ const char *Sockaddr4::GetInterfaceName() const
 Types Sockaddr4::GetType() const
 {
     return kIpv4;
-}
-
-static int Ipv4Cmp(struct sockaddr_in *lhs, struct sockaddr_in *rhs)
-{
-    for (int index = 0; index < 4; index++)
-    {
-        if ((reinterpret_cast<uint8_t *>(&(lhs->sin_addr.s_addr)))[index] > (reinterpret_cast<uint8_t *>(&(rhs->sin_addr.s_addr)))[index])
-        {
-            return 1;
-        }
-        else if ((reinterpret_cast<uint8_t *>(&(lhs->sin_addr.s_addr)))[index] < (reinterpret_cast<uint8_t *>(&(rhs->sin_addr.s_addr)))[index])
-        {
-            return -1;
-        }
-    }
-
-    return 0;
 }
 
 void Sockaddr4::SetLocalArgs()

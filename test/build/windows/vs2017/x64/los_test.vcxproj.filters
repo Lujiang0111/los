@@ -22,6 +22,9 @@
     <Filter Include="源文件\util">
       <UniqueIdentifier>{cf166283-aa95-4d51-a4b5-dfc35030fad5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\socket">
+      <UniqueIdentifier>{dbd58cda-aee0-4180-a4ba-7e725d6db652}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\main.cpp">
@@ -36,6 +39,9 @@
     <ClCompile Include="..\..\..\..\src\util\test_util.cpp">
       <Filter>源文件\util</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\socket\test_socket.cpp">
+      <Filter>源文件\socket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\test_file.h">
@@ -45,6 +51,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\test_util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\test_socket.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

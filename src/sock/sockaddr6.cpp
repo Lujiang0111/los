@@ -54,6 +54,50 @@ Sockaddr6::~Sockaddr6()
 {
 }
 
+static int Ipv6Cmp(struct sockaddr_in6 *lhs, struct sockaddr_in6 *rhs)
+{
+    for (int index = 0; index < 16; index++)
+    {
+        if ((reinterpret_cast<uint8_t *>(&(lhs->sin6_addr)))[index] > (reinterpret_cast<uint8_t *>(&(rhs->sin6_addr)))[index])
+        {
+            return 1;
+        }
+        else if ((reinterpret_cast<uint8_t *>(&(lhs->sin6_addr)))[index] < (reinterpret_cast<uint8_t *>(&(rhs->sin6_addr)))[index])
+        {
+            return -1;
+        }
+    }
+    return 0;
+}
+
+int Sockaddr6::Compare(SockaddrInterface *rhs)
+{
+    Sockaddr6 *rhs6 = dynamic_cast<Sockaddr6 *>(rhs);
+    if (!rhs6)
+    {
+        los::logs::Printfln("Wrong type between group addr and local addr");
+        return INT_MAX;
+    }
+
+    return Ipv6Cmp(&addr_, &rhs6->addr_);
+}
+
+void Sockaddr6::IpIncrease()
+{
+    for (int idx = 15; (idx >= 0) && (0 == ++reinterpret_cast<uint8_t *>(&addr_.sin6_addr)[idx]); --idx);
+    char ip_buf[INET6_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET6, &addr_.sin6_addr, ip_buf, INET6_ADDRSTRLEN);
+    ip_ = ip_buf;
+}
+
+void Sockaddr6::IpDecrease()
+{
+    for (int idx = 15; (idx >= 0) && (0xff == --reinterpret_cast<uint8_t *>(&addr_.sin6_addr)[idx]); --idx);
+    char ip_buf[INET6_ADDRSTRLEN] = { 0 };
+    inet_ntop(AF_INET6, &addr_.sin6_addr, ip_buf, INET6_ADDRSTRLEN);
+    ip_ = ip_buf;
+}
+
 bool Sockaddr6::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
 {
     Sockaddr6 *group_addr6 = dynamic_cast<Sockaddr6 *>(group_addr);
@@ -249,22 +293,6 @@ const char *Sockaddr6::GetInterfaceName() const
 Types Sockaddr6::GetType() const
 {
     return kIpv6;
-}
-
-static int Ipv6Cmp(struct sockaddr_in6 *lhs, struct sockaddr_in6 *rhs)
-{
-    for (int index = 0; index < 16; index++)
-    {
-        if ((reinterpret_cast<uint8_t *>(&(lhs->sin6_addr)))[index] > (reinterpret_cast<uint8_t *>(&(rhs->sin6_addr)))[index])
-        {
-            return 1;
-        }
-        else if ((reinterpret_cast<uint8_t *>(&(lhs->sin6_addr)))[index] < (reinterpret_cast<uint8_t *>(&(rhs->sin6_addr)))[index])
-        {
-            return -1;
-        }
-    }
-    return 0;
 }
 
 void Sockaddr6::SetLocalArgs()

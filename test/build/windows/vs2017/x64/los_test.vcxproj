@@ -183,11 +183,13 @@
     <ClCompile Include="..\..\..\..\src\file\test_file.cpp" />
     <ClCompile Include="..\..\..\..\src\log\test_log.cpp" />
     <ClCompile Include="..\..\..\..\src\main.cpp" />
+    <ClCompile Include="..\..\..\..\src\socket\test_socket.cpp" />
     <ClCompile Include="..\..\..\..\src\util\test_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\test_file.h" />
     <ClInclude Include="..\..\..\..\include\test_log.h" />
+    <ClInclude Include="..\..\..\..\include\test_socket.h" />
     <ClInclude Include="..\..\..\..\include\test_util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

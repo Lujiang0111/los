@@ -7,6 +7,7 @@
 #include "test_file.h"
 #include "test_log.h"
 #include "test_util.h"
+#include "test_socket.h"
 
 enum TestTypes
 {
@@ -17,6 +18,7 @@ enum TestTypes
     kTestMultiThreadLogging,
     kTestSleepTime,
     kTestMultiThreadSleepTime,
+    kTestSocketInCrease,
 };
 
 static constexpr struct TestTypeMaps
@@ -32,6 +34,7 @@ static constexpr struct TestTypeMaps
     {kTestMultiThreadLogging, "Test multi thread logging"},
     {kTestSleepTime, "Test Sleep Time"},
     {kTestMultiThreadSleepTime, "Test Multithread Sleep Time"},
+    {kTestSocketInCrease, "Test socket addr increase and decrease"}
 };
 
 bool b_app_start = true;
@@ -85,6 +88,9 @@ int main(int argc, char **argv)
         break;
     case kTestMultiThreadSleepTime:
         TestMultiThreadSleepTime(argc, argv);
+        break;
+    case kTestSocketInCrease:
+        TestSocketIncrease(argc, argv);
         break;
     default:
         printf("Unspecified test type!\n");

@@ -21,6 +21,12 @@ public:
     Sockaddr4(sockaddr_in *p_addr, bool is_local);
     virtual ~Sockaddr4();
 
+    virtual int Compare(SockaddrInterface *rhs);
+
+    virtual void IpIncrease();
+
+    virtual void IpDecrease();
+
     virtual bool JoinMulticastGroup(int fd, SockaddrInterface *group_addr);
 
     virtual bool DropMulticastGroup(int fd, SockaddrInterface *group_addr);
