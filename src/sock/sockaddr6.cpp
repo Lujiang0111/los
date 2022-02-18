@@ -76,7 +76,7 @@ int Sockaddr6::Compare(SockaddrInterface *rhs)
     if (!rhs6)
     {
         los::logs::Printfln("Wrong type between group addr and local addr");
-        return INT_MAX;
+        return 2;
     }
 
     return Ipv6Cmp(&addr_, &rhs6->addr_);

@@ -79,7 +79,7 @@ int Sockaddr4::Compare(SockaddrInterface *rhs)
     if (!rhs4)
     {
         los::logs::Printfln("Wrong type between group addr and local addr");
-        return INT_MAX;
+        return 2;
     }
 
     return Ipv4Cmp(&addr_, &rhs4->addr_);
