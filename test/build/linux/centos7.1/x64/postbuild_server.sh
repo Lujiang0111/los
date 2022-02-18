@@ -10,6 +10,10 @@ mkdir -p server/lib
 \cp debug.sh server/
 \cp memcheck.sh server/
 
+if [ -d "../../../../conf" ]; then
+    \cp ../../../../conf/* server/ -r
+fi
+
 cd server
 sed -i "2i PROJECT=${PROJECT}" run.sh
 sed -i "2i PROJECT=${PROJECT}" debug.sh

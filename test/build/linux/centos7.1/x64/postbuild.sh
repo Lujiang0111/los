@@ -60,17 +60,23 @@ function copy_dependency()
 	for((i=1;i<${index};i+=2))
 	do
 		echo -e "\033[33m${array[i]} ${array[i+1]}\033[0m"
-		array1=`ls $1/${array[i]}/`
 		res=0
-		for name in ${array1}
-		do
-			version=`echo ${name} | cut -c 2-`	
-			check_version ${version} ${array[i+1]} false
-			if [ $? -eq 1 ];then
-				let res=1
-				finalversion=${version}
-			fi			
-		done
+		if [ -d "$1/${array[i]}/v${array[i+1]}" ]; then
+			let res=1
+			finalversion=${array[i+1]}
+		else
+			array1=`ls $1/${array[i]}/`
+			for name in ${array1}
+			do
+				version=`echo ${name} | cut -c 2-`	
+				check_version ${version} ${array[i+1]} false
+				if [ $? -eq 1 ];then
+					let res=1
+					finalversion=${version}
+				fi			
+			done
+		fi		
+
 #路径上找到兼容的版本
 		if [ ${res} -eq 1 ];then
 			if [ "${release}" = "release" ];then
