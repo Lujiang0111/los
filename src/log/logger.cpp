@@ -159,9 +159,18 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
     {
         if (msg.name.length() > 0)
         {
-            fmt::print(fg(kLogLevelMaps[msg.level].fg_color),
-                "[{}] {} {}:{}, T:{}, {}\n",
-                id, kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content);
+            if (msg.line > 0)
+            {
+                fmt::print(fg(kLogLevelMaps[msg.level].fg_color),
+                    "[{}] {} {}:{}, T:{}, {}\n",
+                    id, kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content);
+            }
+            else
+            {
+                fmt::print(fg(kLogLevelMaps[msg.level].fg_color),
+                    "[{}] {} {}, T:{}, {}\n",
+                    id, kLogLevelMaps[msg.level].level_msg, msg.name, msg.thread_id, msg.content);
+            }
         }
         else
         {
