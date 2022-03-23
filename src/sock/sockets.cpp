@@ -1,6 +1,6 @@
 ﻿#include "los/socks.h"
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <WinSock2.h>
 #include <ws2ipdef.h>
 #include <mstcpip.h>
@@ -18,7 +18,7 @@ namespace socks {
 
 void GlobalInit()
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     // Use the MAKEWORD(lowbyte, highbyte) macro declared in Windef.h
     WORD wVersionRequested = MAKEWORD(2, 2);
 
@@ -44,7 +44,7 @@ void GlobalInit()
 
 void GlobalDeinit()
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     WSACleanup();
 #else
 #endif
@@ -52,7 +52,7 @@ void GlobalDeinit()
 
 int GetLastErrorCode()
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     return WSAGetLastError();
 #else
     return errno;
@@ -61,7 +61,7 @@ int GetLastErrorCode()
 
 bool SetBlockMode(int fd, bool is_block)
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     u_long argp = (is_block) ? 0 : 1;
     return (0 == ioctlsocket(fd, FIONBIO, &argp));
 #else
@@ -88,7 +88,7 @@ bool SetTtl(int fd, int ttl)
 
 bool SetKeepAlive(int fd, int timeout_ms)
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     tcp_keepalive alive;
     if (0 == timeout_ms)
     {

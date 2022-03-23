@@ -3,7 +3,7 @@
 
 #include <string>
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <WinSock2.h>
 #else
 #include <netinet/in.h>

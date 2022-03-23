@@ -3,7 +3,7 @@
 #include <time.h>
 #include <vector>
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <windows.h>
 #else
 #include <unistd.h>
@@ -33,7 +33,7 @@ static constexpr struct LogLevelMaps
 // under VS 2013)
 static inline size_t GetThreadId_()
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     return static_cast<size_t>(::GetCurrentThreadId());
 #elif defined(__linux__)
 #    if defined(__ANDROID__) && defined(__ANDROID_API__) && (__ANDROID_API__ < 21)
@@ -117,7 +117,7 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
 {
     time_t time_tt = std::chrono::system_clock::to_time_t(msg.time);
     std::tm time_tm;
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     ::localtime_s(&time_tm, &time_tt);
 #else
     ::localtime_r(&time_tt, &time_tm);

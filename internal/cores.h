@@ -8,7 +8,7 @@
 
 constexpr char kDirSeps[] = { '\\', '/' };
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 constexpr char kDirSep = kDirSeps[0];
 #else
 constexpr char kDirSep = kDirSeps[1];

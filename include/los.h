@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <memory>
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #if defined(LOS_EXPORT)
 #define LOS_API __declspec(dllexport)
 #else

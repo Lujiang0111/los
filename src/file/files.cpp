@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <windows.h>
 #include <direct.h>
 #else
@@ -16,7 +16,7 @@
 namespace los {
 namespace files {
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 static void GetFileInfoTraverse(FileInfo *parent)
 {
     // Prepare string for use with FindFile functions.  First, copy the
@@ -191,7 +191,7 @@ std::shared_ptr<FileInfoInterface> GetFileInfo(const char *name, Sorts sort_type
     std::string file_name = name;
     AdjustFilePath(file_name);
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     auto file_info = GetFileInfoWindows(file_name);
 #else
     auto file_info = GetFileInfoLinux(file_name);
@@ -203,7 +203,7 @@ std::shared_ptr<FileInfoInterface> GetFileInfo(const char *name, Sorts sort_type
 
 static inline bool mkdir_inline(const std::string &name)
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     return ((0 == mkdir(name.c_str())) || (EEXIST == errno));
 #else
     return ((mkdir(name.c_str(), mode_t(0755)) == 0) || (EEXIST == errno));
@@ -221,7 +221,7 @@ bool CreateDir(const char *name, bool create_parent_only)
     AdjustFilePath(file_name);
 
     size_t search_offset = 0;
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     if ((file_name.length() >= 3) && (':' == file_name[1]) && (kDirSep == file_name[2]))
     {
         search_offset = 3;
@@ -261,7 +261,7 @@ bool CreateDir(const char *name, bool create_parent_only)
 
 static void RemoveFileTraverse(const std::string &name, bool is_top)
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
     std::string search_name = name;
     if (!is_top)
     {

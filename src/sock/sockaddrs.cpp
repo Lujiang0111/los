@@ -1,6 +1,6 @@
 ﻿#include "los/sockaddrs.h"
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <ws2tcpip.h>
 #else
 #include <netdb.h>

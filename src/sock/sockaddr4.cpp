@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #include <ws2ipdef.h>
 #include <ws2tcpip.h>
 #else
@@ -254,7 +254,7 @@ bool Sockaddr4::UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv)
 
     if (is_recv)
     {
-#if defined (WIN32) || defined (_WINDLL)
+#if defined(_WIN32)
         if ((IsMulticast()) && (local_addr4))
         {
             if (bind(fd, reinterpret_cast<const struct sockaddr *>(&local_addr4->addr_), sizeof(local_addr4->addr_)) < 0)
@@ -378,7 +378,7 @@ Types Sockaddr4::GetType() const
 
 void Sockaddr4::SetLocalArgs()
 {
-#if defined(WIN32) || defined(_WINDLL)
+#if defined(_WIN32)
 #else
     struct ifaddrs *ifa = nullptr;
     getifaddrs(&ifa);
