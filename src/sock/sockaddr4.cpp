@@ -384,14 +384,13 @@ void Sockaddr4::SetLocalArgs()
     getifaddrs(&ifa);
     for (struct ifaddrs *node = ifa; node; node = node->ifa_next)
     {
-        if ((nullptr != node->ifa_addr) && (AF_INET == node->ifa_addr->sa_family))
+        if ((nullptr != node->ifa_addr) &&
+            (AF_INET == node->ifa_addr->sa_family) &&
+            (0 == Ipv4Cmp(&addr_, reinterpret_cast<struct sockaddr_in *>(node->ifa_addr))))
         {
-            if (0 == Ipv4Cmp(&addr_, reinterpret_cast<struct sockaddr_in *>(node->ifa_addr)))
-            {
-                if_name_ = (node->ifa_name) ? node->ifa_name : "";
-                if_num_ = if_nametoindex(node->ifa_name);
-                break;
-            }
+            if_name_ = (node->ifa_name) ? node->ifa_name : "";
+            if_num_ = if_nametoindex(node->ifa_name);
+            break;
         }
     }
     freeifaddrs(ifa);
