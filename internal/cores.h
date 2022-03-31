@@ -55,14 +55,11 @@ inline int VsprintfForVector(std::vector<char> &vec, const char *fmt, va_list &v
         ret = vsnprintf(&vec[0], vec.size(), fmt, vp);
         va_end(vp);
 
-        if (ret >= static_cast<int>(vec.size()))
-        {
-            vec.resize(ret + 1);
-        }
-        else if (ret > 0)
+        if (ret < static_cast<int>(vec.size()))
         {
             break;
         }
+        vec.resize(ret + 1);
     }
 
     return ret;
