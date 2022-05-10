@@ -1,5 +1,9 @@
-﻿#include "log/log_thread.h"
+﻿#if defined(_WIN32)
+#else
+#include <pthread.h>
+#endif
 
+#include "log/log_thread.h"
 #include "fmt/format.h"
 
 constexpr size_t kMaxItems = 1000;
@@ -16,6 +20,10 @@ LogThread &LogThread::GetInstance()
 LogThread::LogThread() : msgs_(kMaxItems)
 {
     thread_ = std::thread(&LogThread::WorkerLoop, this);
+#if defined(_WIN32)
+#else
+    pthread_setname_np(thread_.native_handle(), "log");
+#endif
 }
 
 LogThread::~LogThread()
