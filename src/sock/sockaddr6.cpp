@@ -304,16 +304,15 @@ void Sockaddr6::SetLocalArgs()
     getifaddrs(&ifa);
     for (struct ifaddrs *node = ifa; node; node = node->ifa_next)
     {
-        if ((nullptr != node->ifa_addr) && (AF_INET6 == node->ifa_addr->sa_family))
+        if ((nullptr != node->ifa_addr) &&
+            (AF_INET6 == node->ifa_addr->sa_family) &&
+            (0 == Ipv6Cmp(&addr_, reinterpret_cast<struct sockaddr_in6 *>(node->ifa_addr))))
         {
-            if (0 == Ipv6Cmp(&addr_, reinterpret_cast<struct sockaddr_in6 *>(node->ifa_addr)))
-            {
-                if_name_ = (node->ifa_name) ? node->ifa_name : "";
-                if_num_ = if_nametoindex(node->ifa_name);
-                scope_id_ = (reinterpret_cast<struct sockaddr_in6 *>(node->ifa_addr))->sin6_scope_id;
-                addr_.sin6_scope_id = scope_id_;
-                break;
-            }
+            if_name_ = (node->ifa_name) ? node->ifa_name : "";
+            if_num_ = if_nametoindex(node->ifa_name);
+            scope_id_ = (reinterpret_cast<struct sockaddr_in6 *>(node->ifa_addr))->sin6_scope_id;
+            addr_.sin6_scope_id = scope_id_;
+            break;
         }
     }
     freeifaddrs(ifa);

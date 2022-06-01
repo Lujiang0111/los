@@ -151,7 +151,7 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
             time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday, time_tm.tm_hour);
         files::CreateDir(name.c_str(), true);
         file_ = fopen(name.c_str(), "a");
-        
+
         hour_count_ = hour_count;
     }
 
