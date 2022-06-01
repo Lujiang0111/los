@@ -87,8 +87,8 @@ std::shared_ptr<SockaddrInterface> RecvFrom(int fd, void *buf, int &len)
 {
     sockaddr_storage remote_addr = { 0 };
     socklen_t remote_addr_len = sizeof(sockaddr_storage);
-    int recv_len = recvfrom(fd, static_cast<char *>(buf), len, 0, reinterpret_cast<struct sockaddr *>(&remote_addr), &remote_addr_len);
-    if (recv_len <= 0)
+    len = recvfrom(fd, static_cast<char *>(buf), len, 0, reinterpret_cast<struct sockaddr *>(&remote_addr), &remote_addr_len);
+    if (len <= 0)
     {
         return nullptr;
     }
