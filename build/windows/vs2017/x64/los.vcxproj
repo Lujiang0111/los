@@ -185,11 +185,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\los.h" />
+    <ClInclude Include="..\..\..\..\include\los\events.h" />
     <ClInclude Include="..\..\..\..\include\los\files.h" />
     <ClInclude Include="..\..\..\..\include\los\logs.h" />
     <ClInclude Include="..\..\..\..\include\los\sockaddrs.h" />
     <ClInclude Include="..\..\..\..\include\los\socks.h" />
     <ClInclude Include="..\..\..\..\internal\cores.h" />
+    <ClInclude Include="..\..\..\..\internal\event\io_epoll.h" />
+    <ClInclude Include="..\..\..\..\internal\event\io_select.h" />
     <ClInclude Include="..\..\..\..\internal\file\file_info.h" />
     <ClInclude Include="..\..\..\..\internal\log\circular_q.h" />
     <ClInclude Include="..\..\..\..\internal\log\logger.h" />
@@ -199,6 +202,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\cores.cpp" />
+    <ClCompile Include="..\..\..\..\src\event\events.cpp" />
+    <ClCompile Include="..\..\..\..\src\event\io_epoll.cpp" />
+    <ClCompile Include="..\..\..\..\src\event\io_select.cpp" />
     <ClCompile Include="..\..\..\..\src\file\files.cpp" />
     <ClCompile Include="..\..\..\..\src\file\file_info.cpp" />
     <ClCompile Include="..\..\..\..\src\log\logger.cpp" />

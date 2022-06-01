@@ -37,6 +37,12 @@
     <Filter Include="内部文件\sock">
       <UniqueIdentifier>{30c6e334-7ad5-4ffe-ae7f-9728a4abd4a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="内部文件\event">
+      <UniqueIdentifier>{287a7594-3781-4bd0-9970-403dd8b6039a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\event">
+      <UniqueIdentifier>{c1718cf5-4598-47fd-9f65-f0e3b0ae4196}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\los.h">
@@ -75,6 +81,15 @@
     <ClInclude Include="..\..\..\..\internal\log\circular_q.h">
       <Filter>内部文件\log</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\include\los\events.h">
+      <Filter>头文件\los</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\event\io_select.h">
+      <Filter>内部文件\event</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\internal\event\io_epoll.h">
+      <Filter>内部文件\event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\file\files.cpp">
@@ -106,6 +121,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\sock\sockets.cpp">
       <Filter>源文件\sock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\event\io_select.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\event\io_epoll.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\event\events.cpp">
+      <Filter>源文件\event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
