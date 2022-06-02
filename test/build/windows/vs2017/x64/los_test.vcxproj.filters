@@ -25,6 +25,9 @@
     <Filter Include="源文件\socket">
       <UniqueIdentifier>{dbd58cda-aee0-4180-a4ba-7e725d6db652}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\event">
+      <UniqueIdentifier>{b2b7e66c-d0ec-4d5e-be62-bb019543e158}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\main.cpp">
@@ -42,6 +45,12 @@
     <ClCompile Include="..\..\..\..\src\socket\test_socket.cpp">
       <Filter>源文件\socket</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\event\test_udp_client.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\event\test_udp_server.cpp">
+      <Filter>源文件\event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\include\test_file.h">
@@ -54,6 +63,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\include\test_socket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\include\test_event.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -115,7 +115,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>los.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>los.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\..\..\deps\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
@@ -180,6 +180,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\event\test_udp_client.cpp" />
+    <ClCompile Include="..\..\..\..\src\event\test_udp_server.cpp" />
     <ClCompile Include="..\..\..\..\src\file\test_file.cpp" />
     <ClCompile Include="..\..\..\..\src\log\test_log.cpp" />
     <ClCompile Include="..\..\..\..\src\main.cpp" />
@@ -187,6 +189,7 @@
     <ClCompile Include="..\..\..\..\src\util\test_util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\include\test_event.h" />
     <ClInclude Include="..\..\..\..\include\test_file.h" />
     <ClInclude Include="..\..\..\..\include\test_log.h" />
     <ClInclude Include="..\..\..\..\include\test_socket.h" />
