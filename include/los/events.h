@@ -15,8 +15,8 @@ enum class MultiplexTypes : int
 
 enum EventTypes : int
 {
-    kRead = 0x00,
-    kWrite = 0x01,
+    kRead = 0x01,
+    kWrite = 0x02,
 };
 
 typedef void (*HandlerCallback)(void *priv_data, int trigger_events);
