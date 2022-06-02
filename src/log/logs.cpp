@@ -27,10 +27,14 @@ void Printf(const char *format, ...)
         return;
     }
 
-    LogMsg msg;
-    msg.type = kPrint;
-    msg.content = &content_buf[0];
-    LogThread::GetInstance().Enqueue(std::move(msg));
+    std::shared_ptr<LogMsg> msg = std::make_shared<LogMsg>();
+    msg->type = kPrint;
+    msg->content = &content_buf[0];
+
+    msg->promise = std::make_shared<std::promise<bool>>();
+    auto fut = msg->promise->get_future();
+    LogThread::GetInstance().Enqueue(msg);
+    fut.get();
 }
 
 void Printfln(const char *format, ...)
@@ -46,10 +50,14 @@ void Printfln(const char *format, ...)
         return;
     }
 
-    LogMsg msg;
-    msg.type = kPrintln;
-    msg.content = &content_buf[0];
-    LogThread::GetInstance().Enqueue(std::move(msg));
+    std::shared_ptr<LogMsg> msg = std::make_shared<LogMsg>();
+    msg->type = kPrintln;
+    msg->content = &content_buf[0];
+
+    msg->promise = std::make_shared<std::promise<bool>>();
+    auto fut = msg->promise->get_future();
+    LogThread::GetInstance().Enqueue(msg);
+    fut.get();
 }
 
 }   // namespace logs

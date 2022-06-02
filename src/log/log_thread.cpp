@@ -29,9 +29,9 @@ LogThread::LogThread() : msgs_(kMaxItems)
 LogThread::~LogThread()
 {
     // post a kTerminate msg
-    LogMsg msg;
-    msg.type = kTerminate;
-    Enqueue(std::move(msg));
+    std::shared_ptr<LogMsg> msg = std::make_shared<LogMsg>();
+    msg->type = kTerminate;
+    Enqueue(msg);
 
     if (thread_.joinable())
     {
@@ -39,7 +39,7 @@ LogThread::~LogThread()
     }
 }
 
-void LogThread::Enqueue(LogMsg &&msg)
+void LogThread::Enqueue(std::shared_ptr<LogMsg> msg)
 {
     {
         std::unique_lock<std::mutex> lock(msgs_mutex_);
@@ -48,47 +48,54 @@ void LogThread::Enqueue(LogMsg &&msg)
     push_cv_.notify_one();
 }
 
-bool LogThread::DequeueFor(LogMsg &msg, size_t wait_ms)
+std::shared_ptr<LogMsg> LogThread::DequeueFor(size_t wait_ms)
 {
+    std::shared_ptr<LogMsg> msg = nullptr;
     {
         std::unique_lock<std::mutex> lock(msgs_mutex_);
         if (!push_cv_.wait_for(lock, std::chrono::milliseconds(wait_ms), [this] { return !this->msgs_.empty(); }))
         {
             return false;
         }
-        msg = std::move(msgs_.front());
+        msg = msgs_.front();
         msgs_.pop_front();
     }
-    return true;
+    return msg;
 }
 
 void LogThread::WorkerLoop()
 {
     size_t id = 0;
-    while (true)
+    bool loop_running = true;
+    while (loop_running)
     {
-        LogMsg msg;
-        if (!DequeueFor(msg, 10000))
+        auto msg = DequeueFor(10000);
+        if (!msg)
         {
             continue;
         }
 
-        switch (msg.type)
+        switch (msg->type)
         {
         case kLog:
-            msg.logger->DoLog(id++, msg);
+            msg->logger->DoLog(id++, *msg);
             break;
         case kPrint:
-            fmt::print("{}", msg.content);
+            fmt::print("{}", msg->content);
             break;
         case kPrintln:
-            fmt::print("{}\n", msg.content);
+            fmt::print("{}\n", msg->content);
             break;
         case kTerminate:
-            // force return
-            return;
+            loop_running = false;
+            break;
         default:
             break;
+        }
+
+        if (msg->promise)
+        {
+            msg->promise->set_value(true);
         }
     }
 }

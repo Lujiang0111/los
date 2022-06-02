@@ -1,6 +1,7 @@
 ﻿#ifndef LOS_INTERNAL_LOG_LOG_THREAD_H_
 #define LOS_INTERNAL_LOG_LOG_THREAD_H_
 
+#include <future>
 #include <thread>
 #include <condition_variable>
 
@@ -29,6 +30,7 @@ struct LogMsg
     std::string name;
     int line{ 0 };
     std::string content;
+    std::shared_ptr<std::promise<bool>> promise;
 };
 
 class LogThread
@@ -40,8 +42,8 @@ public:
 
     static LogThread &GetInstance();
 
-    void Enqueue(LogMsg &&msg);
-    bool DequeueFor(LogMsg &msg, size_t wait_ms);
+    void Enqueue(std::shared_ptr<LogMsg> msg);
+    std::shared_ptr<LogMsg> DequeueFor(size_t wait_ms);
 
 private:
     LogThread();
@@ -52,7 +54,7 @@ private:
     std::thread thread_;
     std::mutex msgs_mutex_;
     std::condition_variable push_cv_;
-    circular_q<LogMsg> msgs_;
+    circular_q<std::shared_ptr<LogMsg>> msgs_;
 };
 
 }   // namespace files

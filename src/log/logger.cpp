@@ -95,22 +95,22 @@ void Logger::Log(Levels level, bool print_screen, const char *name, int line, co
 
 void Logger::LogContent(Levels level, bool print_screen, const char *name, int line, const char *content, size_t content_length)
 {
-    LogMsg msg;
-    msg.logger = shared_from_this();
-    msg.type = kLog;
-    msg.time = std::chrono::system_clock::now();
-    msg.thread_id = GetThreadId();
-    msg.level = level;
-    msg.print_screen = print_screen;
-    msg.name = (name) ? name : "";
-    msg.line = line;
+    std::shared_ptr<LogMsg> msg = std::make_shared<LogMsg>();
+    msg->logger = shared_from_this();
+    msg->type = kLog;
+    msg->time = std::chrono::system_clock::now();
+    msg->thread_id = GetThreadId();
+    msg->level = level;
+    msg->print_screen = print_screen;
+    msg->name = (name) ? name : "";
+    msg->line = line;
 
     if ((content) && (content_length > 0))
     {
-        msg.content.assign(content, content_length);
+        msg->content.assign(content, content_length);
     }
 
-    LogThread::GetInstance().Enqueue(std::move(msg));
+    LogThread::GetInstance().Enqueue(msg);
 }
 
 void Logger::DoLog(size_t id, const LogMsg &msg)
