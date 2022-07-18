@@ -13,5 +13,5 @@ set src_base=..\..\..\..\..\..\..\..\Versions\Baselib\
 
 ::fmt
 mkdir %dep_base%include\fmt
-xcopy %src_base%fmt\v8.1.1\%os_version%include %dep_base%include\fmt /S /Y /C
-xcopy %src_base%fmt\v8.1.1\%os_version%lib %dep_base%lib /S /Y /C
+xcopy %src_base%fmt\v9.0.0\%os_version%include %dep_base%include\fmt /S /Y /C
+xcopy %src_base%fmt\v9.0.0\%os_version%lib %dep_base%lib /S /Y /C

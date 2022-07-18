@@ -101,16 +101,16 @@ void Logger::LogContent(Levels level, bool print_screen, const char *name, int l
     msg->time = std::chrono::system_clock::now();
     msg->thread_id = GetThreadId();
     msg->level = level;
-    msg->print_screen = print_screen;
-    msg->name = (name) ? name : "";
-    msg->line = line;
+    msg->is_on_screen = print_screen;
+    msg->file_name = (name) ? name : "";
+    msg->file_line = line;
 
     if ((content) && (content_length > 0))
     {
         msg->content.assign(content, content_length);
     }
 
-    LogThread::GetInstance().Enqueue(msg);
+    LogThread::GetInstance().EnqueueMsg(msg);
 }
 
 void Logger::DoLog(size_t id, const LogMsg &msg)
@@ -155,21 +155,21 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
         hour_count_ = hour_count;
     }
 
-    if (msg.print_screen)
+    if (msg.is_on_screen)
     {
-        if (msg.name.length() > 0)
+        if (msg.file_name.length() > 0)
         {
-            if (msg.line > 0)
+            if (msg.file_line > 0)
             {
                 fmt::print(fg(kLogLevelMaps[msg.level].fg_color),
                     "[{}] {} {}:{}, T:{}, {}\n",
-                    id, kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content);
+                    id, kLogLevelMaps[msg.level].level_msg, msg.file_name, msg.file_line, msg.thread_id, msg.content);
             }
             else
             {
                 fmt::print(fg(kLogLevelMaps[msg.level].fg_color),
                     "[{}] {} {}, T:{}, {}\n",
-                    id, kLogLevelMaps[msg.level].level_msg, msg.name, msg.thread_id, msg.content);
+                    id, kLogLevelMaps[msg.level].level_msg, msg.file_name, msg.thread_id, msg.content);
             }
         }
         else
@@ -183,12 +183,12 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
     int msec = static_cast<int>(std::chrono::duration_cast<std::chrono::milliseconds>(msg.time.time_since_epoch()).count() % 1000);
     if (file_)
     {
-        std::string content = (msg.name.length() > 0)
+        std::string content = (msg.file_name.length() > 0)
             ? fmt::format("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {} {}:{}, T:{}, {}\n",
                 id,
                 time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,
                 time_tm.tm_hour, time_tm.tm_min, time_tm.tm_sec, msec,
-                kLogLevelMaps[msg.level].level_msg, msg.name, msg.line, msg.thread_id, msg.content)
+                kLogLevelMaps[msg.level].level_msg, msg.file_name, msg.file_line, msg.thread_id, msg.content)
             : fmt::format("[{}] {:04d}-{:02d}-{:02d} {:02d}:{:02d}:{:02d} {:03d}: {}, T:{}, {}\n",
                 id,
                 time_tm.tm_year + 1900, time_tm.tm_mon + 1, time_tm.tm_mday,

@@ -1,11 +1,12 @@
 ﻿#ifndef LOS_INTERNAL_LOG_LOG_THREAD_H_
 #define LOS_INTERNAL_LOG_LOG_THREAD_H_
 
+#include <deque>
+#include <memory>
 #include <future>
 #include <thread>
 #include <condition_variable>
 
-#include "log/circular_q.h"
 #include "log/logger.h"
 
 namespace los {
@@ -22,13 +23,13 @@ enum MsgTypes
 struct LogMsg
 {
     std::shared_ptr<Logger> logger;
-    MsgTypes type{ MsgTypes::kLog };
+    MsgTypes type;
     std::chrono::system_clock::time_point time;
-    size_t thread_id{ 0 };
-    Levels level{ Levels::kDebug };
-    bool print_screen{ false };
-    std::string name;
-    int line{ 0 };
+    size_t thread_id;
+    Levels level;
+    bool is_on_screen;
+    std::string file_name;
+    int file_line;
     std::string content;
     std::shared_ptr<std::promise<bool>> promise;
 };
@@ -42,8 +43,17 @@ public:
 
     static LogThread &GetInstance();
 
-    void Enqueue(std::shared_ptr<LogMsg> msg);
-    std::shared_ptr<LogMsg> DequeueFor(size_t wait_ms);
+    /***************************************************************************//**
+     * 消息入队列
+     * @param   path        [in]    消息句柄
+     ******************************************************************************/
+    void EnqueueMsg(std::shared_ptr<LogMsg> msg);
+
+    /***************************************************************************//**
+     * 消息出队列
+     * @return  是否有新的消息从msgs_enq_进入msgs_deq_队列
+     ******************************************************************************/
+    bool DequeueMsgs();
 
 private:
     LogThread();
@@ -52,9 +62,12 @@ private:
 
 private:
     std::thread thread_;
-    std::mutex msgs_mutex_;
-    std::condition_variable push_cv_;
-    circular_q<std::shared_ptr<LogMsg>> msgs_;
+
+    std::deque<std::shared_ptr<LogMsg>> msgs_enq_;          // msg入队列
+    std::deque<std::shared_ptr<LogMsg>> msgs_deq_;          // msg出队列
+    std::mutex msg_mutex_;
+    std::condition_variable msg_cond_;
+    bool is_msg_full_;
 };
 
 }   // namespace files

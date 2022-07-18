@@ -78,9 +78,6 @@
     <ClInclude Include="..\..\..\..\internal\sock\sockaddr6.h">
       <Filter>内部文件\sock</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\internal\log\circular_q.h">
-      <Filter>内部文件\log</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\include\los\events.h">
       <Filter>头文件\los</Filter>
     </ClInclude>

@@ -33,7 +33,7 @@ void Printf(const char *format, ...)
 
     msg->promise = std::make_shared<std::promise<bool>>();
     auto fut = msg->promise->get_future();
-    LogThread::GetInstance().Enqueue(msg);
+    LogThread::GetInstance().EnqueueMsg(msg);
     fut.get();
 }
 
@@ -56,7 +56,7 @@ void Printfln(const char *format, ...)
 
     msg->promise = std::make_shared<std::promise<bool>>();
     auto fut = msg->promise->get_future();
-    LogThread::GetInstance().Enqueue(msg);
+    LogThread::GetInstance().EnqueueMsg(msg);
     fut.get();
 }
 

@@ -194,7 +194,6 @@
     <ClInclude Include="..\..\..\..\internal\event\io_epoll.h" />
     <ClInclude Include="..\..\..\..\internal\event\io_select.h" />
     <ClInclude Include="..\..\..\..\internal\file\file_info.h" />
-    <ClInclude Include="..\..\..\..\internal\log\circular_q.h" />
     <ClInclude Include="..\..\..\..\internal\log\logger.h" />
     <ClInclude Include="..\..\..\..\internal\log\log_thread.h" />
     <ClInclude Include="..\..\..\..\internal\sock\sockaddr4.h" />

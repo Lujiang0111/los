@@ -22,8 +22,8 @@ class LOS_API LoggerInterface
 public:
     virtual ~LoggerInterface() = default;
 
-    virtual void Log(Levels level, bool print_screen, const char *name, int line, const char *format, ...) = 0;
-    virtual void LogContent(Levels level, bool print_screen, const char *name, int line, const char *content, size_t content_length) = 0;
+    virtual void Log(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *format, ...) = 0;
+    virtual void LogContent(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length) = 0;
 };
 
 /***************************************************************************//**
@@ -41,12 +41,12 @@ LOS_API std::shared_ptr<LoggerInterface> CreateLogger(const char *path, size_t m
 LOS_API LoggerInterface *DefaultLogger();
 
 /***************************************************************************//**
- * printf封装，异步接口，使打印出来的内容与日志内容不发生错位
+ * printf封装，同步接口，使打印出来的内容与日志内容不发生错位
  ******************************************************************************/
 LOS_API void Printf(const char *format, ...);
 
 /***************************************************************************//**
- * printf封装，带换行，异步接口，使打印出来的内容与日志内容不发生错位
+ * printf封装，带换行，同步接口，使打印出来的内容与日志内容不发生错位
  ******************************************************************************/
 LOS_API void Printfln(const char *format, ...);
 
