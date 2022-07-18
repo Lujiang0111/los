@@ -22,8 +22,8 @@ class LOS_API LoggerInterface
 public:
     virtual ~LoggerInterface() = default;
 
-    virtual void Log(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *format, ...) = 0;
-    virtual void LogContent(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length) = 0;
+    virtual void Log(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *format, ...) = 0;
+    virtual void LogContent(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length) = 0;
 };
 
 /***************************************************************************//**

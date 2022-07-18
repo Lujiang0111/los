@@ -20,8 +20,8 @@ public:
     Logger(const char *path, size_t max_size = 0);
     virtual ~Logger();
 
-    virtual void Log(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *format, ...);
-    virtual void LogContent(Levels level, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length);
+    virtual void Log(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *format, ...);
+    virtual void LogContent(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length);
 
     void DoLog(size_t id, const LogMsg &msg);
     void DeleteLog(const files::FileInfoInterface *file_info, size_t &del_size);

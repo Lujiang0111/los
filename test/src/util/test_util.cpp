@@ -16,13 +16,13 @@ static void SleepThread(int sleep_time_ns)
         ++idx;
         auto cur_time = std::chrono::steady_clock::now();
         std::chrono::nanoseconds before_time = cur_time - start_time;
-        los::logs::DefaultLogger()->Log(los::logs::kInfo, false, __FILE__, __LINE__, "%zu, before, %lld", idx, before_time.count());
+        los::logs::DefaultLogger()->Log(los::logs::kInfo, false, false, __FILE__, __LINE__, "%zu, before, %lld", idx, before_time.count());
 
         std::this_thread::sleep_for(std::chrono::nanoseconds(sleep_time_ns));
 
         cur_time = std::chrono::steady_clock::now();
         std::chrono::nanoseconds after_time = cur_time - start_time;
-        los::logs::DefaultLogger()->Log(los::logs::kInfo, false, __FILE__, __LINE__, "%zu, after, %lld, %lld",
+        los::logs::DefaultLogger()->Log(los::logs::kInfo, false, false, __FILE__, __LINE__, "%zu, after, %lld, %lld",
             idx, after_time.count(), after_time.count() - before_time.count());
 
         std::this_thread::sleep_for(std::chrono::milliseconds(1));

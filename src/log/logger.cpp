@@ -82,7 +82,7 @@ Logger::~Logger()
     }
 }
 
-void Logger::Log(Levels level, bool print_screen, const char *name, int line, const char *format, ...)
+void Logger::Log(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *format, ...)
 {
     std::vector<char> content_buf(256);
     va_list vl;
@@ -90,10 +90,10 @@ void Logger::Log(Levels level, bool print_screen, const char *name, int line, co
     int content_len = VsprintfForVector(content_buf, format, vl);
     va_end(vl);
 
-    LogContent(level, print_screen, name, line, &content_buf[0], static_cast<size_t>(content_len));
+    LogContent(level, is_sync, is_on_screen, file_name, file_line, &content_buf[0], static_cast<size_t>(content_len));
 }
 
-void Logger::LogContent(Levels level, bool print_screen, const char *name, int line, const char *content, size_t content_length)
+void Logger::LogContent(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length)
 {
     std::shared_ptr<LogMsg> msg = std::make_shared<LogMsg>();
     msg->logger = shared_from_this();
@@ -101,16 +101,26 @@ void Logger::LogContent(Levels level, bool print_screen, const char *name, int l
     msg->time = std::chrono::system_clock::now();
     msg->thread_id = GetThreadId();
     msg->level = level;
-    msg->is_on_screen = print_screen;
-    msg->file_name = (name) ? name : "";
-    msg->file_line = line;
+    msg->is_on_screen = is_on_screen;
+    msg->file_name = (file_name) ? file_name : "";
+    msg->file_line = file_line;
 
     if ((content) && (content_length > 0))
     {
         msg->content.assign(content, content_length);
     }
 
-    LogThread::GetInstance().EnqueueMsg(msg);
+    if (is_sync)
+    {
+        msg->promise = std::make_shared<std::promise<bool>>();
+        auto fut = msg->promise->get_future();
+        LogThread::GetInstance().EnqueueMsg(msg);
+        fut.get();
+    }
+    else
+    {
+        LogThread::GetInstance().EnqueueMsg(msg);
+    }
 }
 
 void Logger::DoLog(size_t id, const LogMsg &msg)
