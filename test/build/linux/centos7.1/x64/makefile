@@ -15,14 +15,14 @@ endif
 #index 4 is whether exactly match version or not
 PREBUILD_BASELIB_PATH=../../../../../../../../../Versions/Baselib
 PREBUILD_BASELIBS="los 1.0.0 true true false \
-fmt 8.1.1 true true false"
+fmt 9.0.0 true true false"
 
 #postbuild depends libs
 #index 0 is project name
 #index 1 is version
 POSTBUILD_BASELIB_PATH=../../../../../../../../../Versions/Baselib
 POSTBUILD_BASELIBS="los 1.0.0 \
-fmt 8.1.1"
+fmt 9.0.0"
 
 INCLUDE=-I../../../../include \
 -I../../../../internal \
