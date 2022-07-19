@@ -17,7 +17,7 @@ endif
 #index 3 is copy lib flag
 #index 4 is whether exactly match version or not
 PREBUILD_BASELIB_PATH=../../../../../../../../Versions/Baselib
-PREBUILD_BASELIBS="fmt 8.1.1 true true false"
+PREBUILD_BASELIBS="fmt 9.0.0 true true false"
 POSTBUILD_BASELIB_PATH=../../../../../../../../Versions/Baselib
 
 INCLUDE=-I../../../../include \
