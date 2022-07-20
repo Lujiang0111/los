@@ -1,9 +1,9 @@
 #!/bin/bash
-shell_dir=$(cd "$(dirname "${0}")";pwd)/
+shell_path=$(cd "$(dirname "$0")";pwd)/
 project=$1
 target=$2
 
-cd ${shell_dir}
+cd ${shell_path}
 mkdir -p server/lib
 \cp ${target} server/
 \cp run.sh server/
@@ -14,7 +14,7 @@ if [ -d "../../../../conf" ]; then
     \cp ../../../../conf/* server/ -r
 fi
 
-cd ${shell_dir}server/
+cd ${shell_path}server/
 sed -i "2i project=${project}" run.sh
 sed -i "2i project=${project}" debug.sh
 sed -i "2i project=${project}" memcheck.sh

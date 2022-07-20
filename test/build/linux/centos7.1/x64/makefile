@@ -1,4 +1,4 @@
-PROJECT=los_test
+PROJECT=LosTest
 
 ifneq (,$(wildcard ../../../../../../../../../compile.dep))
 	include ../../../../../../../../../compile.dep
