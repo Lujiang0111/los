@@ -17,10 +17,10 @@ enum Levels
     kLevelCnt,
 };
 
-class LOS_API LoggerInterface
+class LOS_API ILogger
 {
 public:
-    virtual ~LoggerInterface() = default;
+    virtual ~ILogger() = default;
 
     virtual void Log(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *format, ...) = 0;
     virtual void LogContent(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length) = 0;
@@ -32,13 +32,13 @@ public:
  * @param   max_size    [in]    日志的总大小，为0则不限制
  * @return  日志句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<LoggerInterface> CreateLogger(const char *path, size_t max_size);
+LOS_API std::shared_ptr<ILogger> CreateLogger(const char *path, size_t max_size);
 
 /***************************************************************************//**
  * 获取默认句柄，日志默认为"Log"，大小不限制
  * @return  默认日志句柄
  ******************************************************************************/
-LOS_API LoggerInterface *DefaultLogger();
+LOS_API ILogger *DefaultLogger();
 
 /***************************************************************************//**
  * printf封装，同步接口，使打印出来的内容与日志内容不发生错位

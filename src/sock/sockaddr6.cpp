@@ -70,7 +70,7 @@ static int Ipv6Cmp(struct sockaddr_in6 *lhs, struct sockaddr_in6 *rhs)
     return 0;
 }
 
-int Sockaddr6::Compare(SockaddrInterface *rhs)
+int Sockaddr6::Compare(ISockaddr *rhs)
 {
     Sockaddr6 *rhs6 = dynamic_cast<Sockaddr6 *>(rhs);
     if (!rhs6)
@@ -98,7 +98,7 @@ void Sockaddr6::IpDecrease()
     ip_ = ip_buf;
 }
 
-bool Sockaddr6::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
+bool Sockaddr6::JoinMulticastGroup(int fd, ISockaddr *group_addr)
 {
     Sockaddr6 *group_addr6 = dynamic_cast<Sockaddr6 *>(group_addr);
     if (!group_addr6)
@@ -120,7 +120,7 @@ bool Sockaddr6::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
     return true;
 }
 
-bool Sockaddr6::DropMulticastGroup(int fd, SockaddrInterface *group_addr)
+bool Sockaddr6::DropMulticastGroup(int fd, ISockaddr *group_addr)
 {
     Sockaddr6 *group_addr6 = dynamic_cast<Sockaddr6 *>(group_addr);
     if (!group_addr6)
@@ -142,31 +142,31 @@ bool Sockaddr6::DropMulticastGroup(int fd, SockaddrInterface *group_addr)
     return true;
 }
 
-bool Sockaddr6::AddMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr6::AddMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     // centos暂时没找到实现
     return true;
 }
 
-bool Sockaddr6::DropMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr6::DropMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     // centos暂时没找到实现
     return true;
 }
 
-bool Sockaddr6::BlockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr6::BlockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     // centos暂时没找到实现
     return true;
 }
 
-bool Sockaddr6::UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr6::UnblockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     // centos暂时没找到实现
     return true;
 }
 
-bool Sockaddr6::UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv)
+bool Sockaddr6::UdpBind(int fd, ISockaddr *local_addr, bool is_recv)
 {
     Sockaddr6 *local_addr6 = dynamic_cast<Sockaddr6 *>(local_addr);
 

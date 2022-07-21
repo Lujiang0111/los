@@ -15,10 +15,10 @@ enum Types
     kIpv6,
 };
 
-class LOS_API SockaddrInterface
+class LOS_API ISockaddr
 {
 public:
-    virtual ~SockaddrInterface() = default;
+    virtual ~ISockaddr() = default;
 
     /***************************************************************************//**
     * 比较
@@ -28,7 +28,7 @@ public:
     *           =0  this = rhs
     *           <0  this < rhs
      ******************************************************************************/
-    virtual int Compare(SockaddrInterface *rhs) = 0;
+    virtual int Compare(ISockaddr *rhs) = 0;
 
     /***************************************************************************//**
     * Ip地址自增
@@ -46,7 +46,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool JoinMulticastGroup(int fd, SockaddrInterface *group_addr) = 0;
+    virtual bool JoinMulticastGroup(int fd, ISockaddr *group_addr) = 0;
 
     /***************************************************************************//**
     * 本机地址离开组播组
@@ -54,7 +54,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool DropMulticastGroup(int fd, SockaddrInterface *group_addr) = 0;
+    virtual bool DropMulticastGroup(int fd, ISockaddr *group_addr) = 0;
 
     /***************************************************************************//**
     * 组播组添加源(白名单）
@@ -63,7 +63,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool AddMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr) = 0;
+    virtual bool AddMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr) = 0;
 
     /***************************************************************************//**
     * 组播组删除源（白名单）
@@ -72,7 +72,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool DropMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr) = 0;
+    virtual bool DropMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr) = 0;
 
     /***************************************************************************//**
     * 组播组锁定源(黑名单）
@@ -81,7 +81,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool BlockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr) = 0;
+    virtual bool BlockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr) = 0;
 
     /***************************************************************************//**
     * 组播组解锁源（白名单）
@@ -90,7 +90,7 @@ public:
     * @note     this指针指向的是对应的本机网卡地址
     * @return   true/false  成功/失败
      ******************************************************************************/
-    virtual bool UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr) = 0;
+    virtual bool UnblockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr) = 0;
 
     /***************************************************************************//**
     * Udp发送/接收前设置，执行必须的bind函数
@@ -100,7 +100,7 @@ public:
     * @note         this指针指向的是目的地址
     * @return       true/false  成功/失败
      ******************************************************************************/
-    virtual bool UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv) = 0;
+    virtual bool UdpBind(int fd, ISockaddr *local_addr, bool is_recv) = 0;
 
     /***************************************************************************//**
     * socket bind封装
@@ -170,9 +170,9 @@ public:
 * port      [in]    端口
 * is_local  [in]    是否为本机地址
 * @return   nullptr 创建失败
-*           other   sockaddr句柄     
+*           other   sockaddr句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint16_t port, bool is_local);
+LOS_API std::shared_ptr<ISockaddr> CreateSockaddr(const char *host, uint16_t port, bool is_local);
 
 /***************************************************************************//**
 * accept()封装
@@ -180,7 +180,7 @@ LOS_API std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint
 * remote_fd [out]   accept()返回的对端fd
 * @return   对端地址句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd);
+LOS_API std::shared_ptr<ISockaddr> Accept(int fd, int &remote_fd);
 
 /***************************************************************************//**
 * recvfrom()封装
@@ -189,14 +189,14 @@ LOS_API std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd);
 * len       [in/out]    输入为缓冲区最大字节数，输出为接收字节数
 * @return   recvfrom()返回的对端地址句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<SockaddrInterface> RecvFrom(int fd, void *buf, int &len);
+LOS_API std::shared_ptr<ISockaddr> RecvFrom(int fd, void *buf, int &len);
 
 /***************************************************************************//**
 * getsockname()封装
 * fd        [in]    套接字
 * @return   getsockname()返回的对端地址句柄
  ******************************************************************************/
-LOS_API std::shared_ptr<SockaddrInterface> Getsockname(int fd);
+LOS_API std::shared_ptr<ISockaddr> Getsockname(int fd);
 
 /***************************************************************************//**
 * 获取ip地址类型

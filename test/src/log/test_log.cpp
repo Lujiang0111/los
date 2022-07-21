@@ -9,7 +9,7 @@ constexpr size_t kLogSize = 10000000;
 
 extern bool b_app_start;
 
-static void LogThread(std::shared_ptr<los::logs::LoggerInterface> logger, bool is_sync, double speed)
+static void LogThread(std::shared_ptr<los::logs::ILogger> logger, bool is_sync, double speed)
 {
     auto last_time = std::chrono::steady_clock::now();
     double last_cnt = 0;

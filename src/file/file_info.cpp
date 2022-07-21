@@ -40,7 +40,7 @@ size_t FileInfo::GetChildsSize() const
     return childs_.size();
 }
 
-const FileInfoInterface *FileInfo::GetChild(size_t idx) const
+const IFileInfo *FileInfo::GetChild(size_t idx) const
 {
     if (idx >= childs_.size())
     {

@@ -14,7 +14,7 @@ struct SelectHandler
     int register_events;
 };
 
-class IoSelect : public IoInterface
+class IoSelect : public IIo
 {
 public:
     IoSelect() = delete;

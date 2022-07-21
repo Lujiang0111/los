@@ -9,7 +9,7 @@
 namespace los {
 namespace files {
 
-class FileInfo : public FileInfoInterface
+class FileInfo : public IFileInfo
 {
 public:
     FileInfo();
@@ -22,7 +22,7 @@ public:
     virtual int64_t GetModifyTimestamp() const;
 
     virtual size_t GetChildsSize() const;
-    virtual const FileInfoInterface *GetChild(size_t idx) const;
+    virtual const IFileInfo *GetChild(size_t idx) const;
 
 public:
     std::string name_;

@@ -14,9 +14,9 @@
 namespace los {
 namespace sockaddrs {
 
-std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint16_t port, bool is_local)
+std::shared_ptr<ISockaddr> CreateSockaddr(const char *host, uint16_t port, bool is_local)
 {
-    std::shared_ptr<SockaddrInterface> h = nullptr;
+    std::shared_ptr<ISockaddr> h = nullptr;
     auto type = GetIpType(host);
     switch (type)
     {
@@ -56,7 +56,7 @@ std::shared_ptr<SockaddrInterface> CreateSockaddr(const char *host, uint16_t por
     return std::move(h);
 }
 
-std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd)
+std::shared_ptr<ISockaddr> Accept(int fd, int &remote_fd)
 {
     sockaddr_storage remote_addr = { 0 };
     socklen_t remote_addr_len = sizeof(sockaddr_storage);
@@ -66,7 +66,7 @@ std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd)
         return nullptr;
     }
 
-    std::shared_ptr<SockaddrInterface> h = nullptr;
+    std::shared_ptr<ISockaddr> h = nullptr;
     if (AF_INET == remote_addr.ss_family)
     {
         h = std::make_shared<Sockaddr4>(reinterpret_cast<sockaddr_in *>(&remote_addr), false);
@@ -83,7 +83,7 @@ std::shared_ptr<SockaddrInterface> Accept(int fd, int &remote_fd)
     return std::move(h);
 }
 
-std::shared_ptr<SockaddrInterface> RecvFrom(int fd, void *buf, int &len)
+std::shared_ptr<ISockaddr> RecvFrom(int fd, void *buf, int &len)
 {
     sockaddr_storage remote_addr = { 0 };
     socklen_t remote_addr_len = sizeof(sockaddr_storage);
@@ -93,7 +93,7 @@ std::shared_ptr<SockaddrInterface> RecvFrom(int fd, void *buf, int &len)
         return nullptr;
     }
 
-    std::shared_ptr<SockaddrInterface> h = nullptr;
+    std::shared_ptr<ISockaddr> h = nullptr;
     if (AF_INET == remote_addr.ss_family)
     {
         h = std::make_shared<Sockaddr4>(reinterpret_cast<sockaddr_in *>(&remote_addr), false);
@@ -110,7 +110,7 @@ std::shared_ptr<SockaddrInterface> RecvFrom(int fd, void *buf, int &len)
     return std::move(h);
 }
 
-std::shared_ptr<SockaddrInterface> Getsockname(int fd)
+std::shared_ptr<ISockaddr> Getsockname(int fd)
 {
     sockaddr_storage remote_addr = { 0 };
     socklen_t remote_addr_len = sizeof(sockaddr_storage);
@@ -119,7 +119,7 @@ std::shared_ptr<SockaddrInterface> Getsockname(int fd)
         return nullptr;
     }
 
-    std::shared_ptr<SockaddrInterface> h = nullptr;
+    std::shared_ptr<ISockaddr> h = nullptr;
     if (AF_INET == remote_addr.ss_family)
     {
         h = std::make_shared<Sockaddr4>(reinterpret_cast<sockaddr_in *>(&remote_addr), true);

@@ -20,10 +20,10 @@ enum Sorts
     kByModifyTime,  // sort by modfify time
 };
 
-class LOS_API FileInfoInterface
+class LOS_API IFileInfo
 {
 public:
-    virtual ~FileInfoInterface() = default;
+    virtual ~IFileInfo() = default;
 
     virtual const char *GetName() const = 0;
     virtual const char *GetFullName() const = 0;
@@ -32,10 +32,10 @@ public:
     virtual int64_t GetModifyTimestamp() const = 0;
 
     virtual size_t GetChildsSize() const = 0;
-    virtual const FileInfoInterface *GetChild(size_t idx) const = 0;
+    virtual const IFileInfo *GetChild(size_t idx) const = 0;
 };
 
-LOS_API std::shared_ptr<FileInfoInterface> GetFileInfo(const char *name, Sorts sort_type);
+LOS_API std::shared_ptr<IFileInfo> GetFileInfo(const char *name, Sorts sort_type);
 
 LOS_API bool CreateDir(const char *name, bool create_parent_only);
 

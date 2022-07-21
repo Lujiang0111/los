@@ -6,7 +6,7 @@
 
 #include "los/files.h"
 
-using FileInfoInterface = los::files::FileInfoInterface;
+using FileInfoInterface = los::files::IFileInfo;
 
 static constexpr struct FileSortMaps
 {

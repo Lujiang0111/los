@@ -3,12 +3,12 @@
 namespace los {
 namespace logs {
 
-std::shared_ptr<LoggerInterface> CreateLogger(const char *path, size_t max_size)
+std::shared_ptr<ILogger> CreateLogger(const char *path, size_t max_size)
 {
     return std::make_shared<Logger>(Logger(path, max_size));
 }
 
-LoggerInterface *DefaultLogger()
+ILogger *DefaultLogger()
 {
     static auto default_logger = CreateLogger("Log", 0);
     return default_logger.get();

@@ -57,8 +57,8 @@ private:
     std::string local_ip_;
 
     int send_fd_;
-    std::shared_ptr<los::sockaddrs::SockaddrInterface> dst_addr_;
-    std::shared_ptr<los::events::IoInterface> io_;
+    std::shared_ptr<los::sockaddrs::ISockaddr> dst_addr_;
+    std::shared_ptr<los::events::IIo> io_;
     std::vector<char> recv_buf_;
     std::deque<std::string> send_msgs_cur_;
 
@@ -192,7 +192,7 @@ bool UdpClient::InitSocket()
 
     // 创建本机地址
     uint16_t local_port = 0;
-    std::shared_ptr<los::sockaddrs::SockaddrInterface> local_addr = nullptr;
+    std::shared_ptr<los::sockaddrs::ISockaddr> local_addr = nullptr;
     if (local_ip_.length() > 0)
     {
         local_addr = los::sockaddrs::CreateSockaddr(local_ip_.c_str(), local_port, true);

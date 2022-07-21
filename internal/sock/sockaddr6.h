@@ -15,32 +15,32 @@
 namespace los {
 namespace sockaddrs {
 
-class Sockaddr6 : public SockaddrInterface
+class Sockaddr6 : public ISockaddr
 {
 public:
     Sockaddr6(const char *ip, uint16_t port, bool is_local);
     Sockaddr6(sockaddr_in6 *p_addr, bool is_local);
     virtual ~Sockaddr6();
 
-    virtual int Compare(SockaddrInterface *rhs);
+    virtual int Compare(ISockaddr *rhs);
 
     virtual void IpIncrease();
 
     virtual void IpDecrease();
 
-    virtual bool JoinMulticastGroup(int fd, SockaddrInterface *group_addr);
+    virtual bool JoinMulticastGroup(int fd, ISockaddr *group_addr);
 
-    virtual bool DropMulticastGroup(int fd, SockaddrInterface *group_addr);
+    virtual bool DropMulticastGroup(int fd, ISockaddr *group_addr);
 
-    virtual bool AddMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
+    virtual bool AddMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr);
 
-    virtual bool DropMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
+    virtual bool DropMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr);
 
-    virtual bool BlockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
+    virtual bool BlockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr);
 
-    virtual bool UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr);
+    virtual bool UnblockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr);
 
-    virtual bool UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv);
+    virtual bool UdpBind(int fd, ISockaddr *local_addr, bool is_recv);
 
     virtual bool Bind(int fd);
 

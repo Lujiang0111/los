@@ -209,7 +209,7 @@ void Logger::DoLog(size_t id, const LogMsg &msg)
     }
 }
 
-void Logger::DeleteLog(const files::FileInfoInterface *file_info, size_t &del_size)
+void Logger::DeleteLog(const files::IFileInfo *file_info, size_t &del_size)
 {
     if (0 == del_size)
     {

@@ -14,7 +14,7 @@ namespace logs {
 
 struct LogMsg;
 
-class Logger : public LoggerInterface, public std::enable_shared_from_this<Logger>
+class Logger : public ILogger, public std::enable_shared_from_this<Logger>
 {
 public:
     Logger(const char *path, size_t max_size = 0);
@@ -24,7 +24,7 @@ public:
     virtual void LogContent(Levels level, bool is_sync, bool is_on_screen, const char *file_name, int file_line, const char *content, size_t content_length);
 
     void DoLog(size_t id, const LogMsg &msg);
-    void DeleteLog(const files::FileInfoInterface *file_info, size_t &del_size);
+    void DeleteLog(const files::IFileInfo *file_info, size_t &del_size);
 
 private:
     std::string path_;

@@ -151,7 +151,7 @@ static std::shared_ptr<FileInfo> GetFileInfoLinux(const std::string &name)
 #endif
 
 
-void SortFileInfo(FileInfo *file_info , Sorts sort_type)
+void SortFileInfo(FileInfo *file_info, Sorts sort_type)
 {
     if ((!file_info) || (Sorts::kNone == sort_type))
     {
@@ -180,7 +180,7 @@ void SortFileInfo(FileInfo *file_info , Sorts sort_type)
         });
 }
 
-std::shared_ptr<FileInfoInterface> GetFileInfo(const char *name, Sorts sort_type)
+std::shared_ptr<IFileInfo> GetFileInfo(const char *name, Sorts sort_type)
 {
     if (!name)
     {

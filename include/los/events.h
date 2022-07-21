@@ -21,10 +21,10 @@ enum EventTypes : int
 
 typedef void (*HandlerCallback)(void *priv_data, int trigger_events);
 
-class LOS_API IoInterface
+class LOS_API IIo
 {
 public:
-    virtual ~IoInterface() = default;
+    virtual ~IIo() = default;
 
     virtual void RegisterHandler(int fd, HandlerCallback callback, void *priv_data, int register_events) = 0;
     virtual void RemoveHandler(int fd) = 0;
@@ -37,7 +37,7 @@ public:
     virtual void SetTimeoutMs(int timeout_ms) = 0;
 };
 
-LOS_API std::shared_ptr<IoInterface> CreateIo(int timeout_ms, MultiplexTypes type);
+LOS_API std::shared_ptr<IIo> CreateIo(int timeout_ms, MultiplexTypes type);
 
 }
 }

@@ -73,7 +73,7 @@ static int Ipv4Cmp(struct sockaddr_in *lhs, struct sockaddr_in *rhs)
     return 0;
 }
 
-int Sockaddr4::Compare(SockaddrInterface *rhs)
+int Sockaddr4::Compare(ISockaddr *rhs)
 {
     Sockaddr4 *rhs4 = dynamic_cast<Sockaddr4 *>(rhs);
     if (!rhs4)
@@ -101,7 +101,7 @@ void Sockaddr4::IpDecrease()
     ip_ = ip_buf;
 }
 
-bool Sockaddr4::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
+bool Sockaddr4::JoinMulticastGroup(int fd, ISockaddr *group_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     if (!group_addr4)
@@ -123,7 +123,7 @@ bool Sockaddr4::JoinMulticastGroup(int fd, SockaddrInterface *group_addr)
     return true;
 }
 
-bool Sockaddr4::DropMulticastGroup(int fd, SockaddrInterface *group_addr)
+bool Sockaddr4::DropMulticastGroup(int fd, ISockaddr *group_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     if (!group_addr4)
@@ -145,7 +145,7 @@ bool Sockaddr4::DropMulticastGroup(int fd, SockaddrInterface *group_addr)
     return true;
 }
 
-bool Sockaddr4::AddMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr4::AddMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     Sockaddr4 *source_addr4 = dynamic_cast<Sockaddr4 *>(source_addr);
@@ -169,7 +169,7 @@ bool Sockaddr4::AddMulticastSource(int fd, SockaddrInterface *group_addr, Sockad
     return true;
 }
 
-bool Sockaddr4::DropMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr4::DropMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     Sockaddr4 *source_addr4 = dynamic_cast<Sockaddr4 *>(source_addr);
@@ -193,7 +193,7 @@ bool Sockaddr4::DropMulticastSource(int fd, SockaddrInterface *group_addr, Socka
     return true;
 }
 
-bool Sockaddr4::BlockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr4::BlockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     Sockaddr4 *source_addr4 = dynamic_cast<Sockaddr4 *>(source_addr);
@@ -217,7 +217,7 @@ bool Sockaddr4::BlockMulticastSource(int fd, SockaddrInterface *group_addr, Sock
     return true;
 }
 
-bool Sockaddr4::UnblockMulticastSource(int fd, SockaddrInterface *group_addr, SockaddrInterface *source_addr)
+bool Sockaddr4::UnblockMulticastSource(int fd, ISockaddr *group_addr, ISockaddr *source_addr)
 {
     Sockaddr4 *group_addr4 = dynamic_cast<Sockaddr4 *>(group_addr);
     Sockaddr4 *source_addr4 = dynamic_cast<Sockaddr4 *>(source_addr);
@@ -241,7 +241,7 @@ bool Sockaddr4::UnblockMulticastSource(int fd, SockaddrInterface *group_addr, So
     return true;
 }
 
-bool Sockaddr4::UdpBind(int fd, SockaddrInterface *local_addr, bool is_recv)
+bool Sockaddr4::UdpBind(int fd, ISockaddr *local_addr, bool is_recv)
 {
     Sockaddr4 *local_addr4 = dynamic_cast<Sockaddr4 *>(local_addr);
 

@@ -6,7 +6,7 @@
 namespace los {
 namespace events {
 
-std::shared_ptr<IoInterface> CreateIo(int timeout_ms, MultiplexTypes type)
+std::shared_ptr<IIo> CreateIo(int timeout_ms, MultiplexTypes type)
 {
     if (MultiplexTypes::kAuto == type)
     {
@@ -17,7 +17,7 @@ std::shared_ptr<IoInterface> CreateIo(int timeout_ms, MultiplexTypes type)
 #endif
     }
 
-    std::shared_ptr<IoInterface> h = nullptr;
+    std::shared_ptr<IIo> h = nullptr;
     switch (type)
     {
     case los::events::MultiplexTypes::kEpoll:
