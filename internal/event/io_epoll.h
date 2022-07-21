@@ -18,7 +18,7 @@ struct EpollHandler
     int register_events;
 };
 
-class IoEpoll : public IoInterface
+class IoEpoll : public IIo
 {
 public:
     IoEpoll() = delete;

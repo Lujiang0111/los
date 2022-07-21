@@ -1,12 +1,8 @@
 ﻿#include "test_file.h"
-
 #include <inttypes.h>
 #include <vector>
 #include <string>
-
 #include "los/files.h"
-
-using FileInfoInterface = los::files::IFileInfo;
 
 static constexpr struct FileSortMaps
 {
@@ -19,7 +15,7 @@ static constexpr struct FileSortMaps
     {los::files::Sorts::kByModifyTime, "Sort by modfify time"},
 };
 
-static void PresentFileInfo(const FileInfoInterface *file_info)
+static void PresentFileInfo(const los::files::IFileInfo *file_info)
 {
     if (file_info)
     {
